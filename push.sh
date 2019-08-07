@@ -117,7 +117,7 @@ case "$2" in
         fi
 
         if [[ -d "$CHART" ]]; then
-            CHART_PACKAGE="$(helm package "$CHART" | cut -d":" -f2 | tr -d '[:space:]')"
+            CHART_PACKAGE="$(helm package -u "$CHART" | cut -d":" -f2 | tr -d '[:space:]')"
         else
             CHART_PACKAGE="$CHART"
         fi
