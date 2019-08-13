@@ -20,8 +20,8 @@ Flags:
 EOF
 }
 
-declare REPO_USERNAME=""
-declare PASSWORD=""
+declare REPO_USER=""
+declare PASS=""
 
 declare -a POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]
@@ -39,14 +39,14 @@ do
                 exit 1
             fi
             shift
-            REPO_USERNAME=$1
+            REPO_USER=$1
             ;;
         -p|--password)
             if [[ -n "${2:-}" ]]; then
                 shift
-                PASSWORD=$1
+                PASS=$1
             else
-                PASSWORD=
+                PASS=
             fi
             ;;
         *)
@@ -84,14 +84,14 @@ declare CHART
 
 case "$2" in
     login)
-        if [[ -z "$REPO_USERNAME" ]]; then
-            read -p "Username: " REPO_USERNAME
+        if [[ -z "$REPO_USER" ]]; then
+            read -p "Username: " REPO_USER
         fi
-        if [[ -z "$PASSWORD" ]]; then
-            read -s -p "Password: " PASSWORD
+        if [[ -z "$PASS" ]]; then
+            read -s -p "Password: " PASS
             echo
         fi
-        echo "$REPO_USERNAME:$PASSWORD" > "$REPO_AUTH_FILE"
+        echo "$REPO_USER:$PASS" > "$REPO_AUTH_FILE"
         ;;
     logout)
         rm -f "$REPO_AUTH_FILE"
@@ -100,19 +100,19 @@ case "$2" in
         CMD=push
         CHART=$2
 
-        if [[ -z "$REPO_USERNAME" ]] || [[ -z "$PASSWORD" ]]; then
+        if [[ -z "$REPO_USER" ]] || [[ -z "$PASS" ]]; then
             if [[ -f "$REPO_AUTH_FILE" ]]; then
                 echo "Using cached login creds..."
                 AUTH="$(cat $REPO_AUTH_FILE)"
             else
-                if [[ -z "$REPO_USERNAME" ]]; then
-                    read -p "Username: " REPO_USERNAME
+                if [[ -z "$REPO_USER" ]]; then
+                    read -p "Username: " REPO_USER
                 fi
-                if [[ -z "$PASSWORD" ]]; then
-                    read -s -p "Password: " PASSWORD
+                if [[ -z "$PASS" ]]; then
+                    read -s -p "Password: " PASS
                     echo
                 fi
-                AUTH="$REPO_USERNAME:$PASSWORD"
+                AUTH="$REPO_USER:$PASS"
             fi
         fi
 
@@ -127,7 +127,6 @@ case "$2" in
         if [[ -d "$CHART" ]]; then
           rm -f $CHART_PACKAGE
         fi
-
         echo "Done"
         ;;
 esac
