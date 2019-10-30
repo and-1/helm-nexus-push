@@ -67,7 +67,7 @@ fi
 indent() { sed 's/^/  /'; }
 
 declare REPO=$1
-declare REPO_URL="$(helm repo list | grep "^$REPO" | awk '{print $2}')/"
+declare REPO_URL="$(helm repo list | grep "^$REPO\ " | awk '{print $2}')/"
 declare REPO_AUTH_FILE="$(helm home)/repository/auth.$REPO"
 
 if [[ -z "$REPO_URL" ]]; then
